@@ -77,14 +77,6 @@ export const services = [
   },
 ] as const
 
-export const highlights = [
-  'Singapore-Based Support',
-  'Relay Testing',
-  'Electrical Maintenance',
-  'Earthing Checks',
-  'Troubleshooting',
-  'Protection Systems',
-] as const
 
 export const company = {
   name: 'D-POWER TESTING SERVICES PTE LTD',
@@ -140,3 +132,23 @@ export const certificates = [
     icon: 'bolt'
   }
 ] as const
+
+export const aboutSlides = [
+  {
+    image: 'about-slide-1',
+    alt: 'Electrical testing pattern 1'
+  },
+  {
+    image: 'about-slide-2',
+    alt: 'Electrical testing pattern 2'
+  },
+  {
+    image: 'about-slide-3',
+    alt: 'Electrical testing pattern 3'
+  },
+  {
+    image: 'about-slide-4',
+    alt: 'Electrical testing pattern 4'
+  }
+] as const
+
