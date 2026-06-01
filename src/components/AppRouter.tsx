@@ -6,7 +6,6 @@ import AboutSection from './AboutSection'
 import ServicesSection from './ServicesSection'
 import ContactSection from './ContactSection'
 import HoursSection from './HoursSection' 
-import CertificatesSection from './CertificatesSection'
 import TestimonialsSection from './TestimonialsSection' 
 import { slides } from '../data/siteContent'
 
