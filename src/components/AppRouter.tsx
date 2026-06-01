@@ -77,7 +77,7 @@ function AppRouter() {
               <HeroSection activeSlide={activeSlide} onSelectSlide={setActiveSlide} />
               <HoursSection />
               {/* <HomeServicesPreview /> */}
-              <CertificatesSection />
+              {/* <CertificatesSection /> */}
               <TestimonialsSection />
             </>
           )}

@@ -18,7 +18,7 @@ export const slides = [
     title: 'Specialized testing for protection, grounding, and system safety.',
     description:
       'We help clients validate system performance through secondary injection, earth loop impedance testing, earthing system checks, and lightning protection testing.',
-    cta: 'Speak With Magesh', 
+    cta: 'Speak With Us', 
   },
   {
     eyebrow: 'Round-The-Clock Readiness',
@@ -81,11 +81,11 @@ export const services = [
 export const company = {
   name: 'D-POWER TESTING SERVICES PTE LTD',
   subtitle: 'Electrical Testing & Engineering Services',
-  contactName: 'Magesh',
+  contactName: '',
   phone: '+65 9057 1320',
   phoneHref: 'tel:+6590571320',
-  email: 'natarajamagesh@gmail.com',
-  emailHref: 'mailto:natarajamagesh@gmail.com',
+  email: 'dpowertestingservices@gmail.com',
+  emailHref: 'mailto:dpowertestingservices@gmail.com',
   address: '42 Cuff Road, #02-E1 Singapore 209752',
 }
 
