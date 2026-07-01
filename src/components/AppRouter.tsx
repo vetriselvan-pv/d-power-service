@@ -77,7 +77,7 @@ function AppRouter() {
               <HoursSection />
               {/* <HomeServicesPreview /> */}
               {/* <CertificatesSection /> */}
-              <TestimonialsSection />
+              {/* <TestimonialsSection /> */}
             </>
           )}
 
