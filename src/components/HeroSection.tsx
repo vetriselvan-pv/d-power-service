@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { slides } from '../data/siteContent'
 import slideOne from '../assets/slide-1.png'
 import slideTwo from '../assets/slide-2.png'
@@ -46,7 +47,7 @@ function HeroSection({ activeSlide, onSelectSlide }: HeroSectionProps) {
   const slideImages = [slideOne, slideTwo, slideThree, slideFour]
 
   return (
-    <section id="home" className="hero-section">
+    <section id="home" className="hero-section" aria-label="Hero">
       <div className="hero-background" aria-hidden="true">
         {slides.map((slide, index) => (
           <div
@@ -56,7 +57,8 @@ function HeroSection({ activeSlide, onSelectSlide }: HeroSectionProps) {
             <img
               className="hero-slide-image"
               src={slideImages[index]}
-              alt=""
+              alt={slide.title}
+              loading={index === 0 ? 'eager' : 'lazy'}
             />
             <div className="hero-slide-shade" />
             <div className="grid-overlay" />
@@ -66,17 +68,26 @@ function HeroSection({ activeSlide, onSelectSlide }: HeroSectionProps) {
 
       <div className="hero-content">
         <p className="eyebrow">{currentSlide.eyebrow}</p>
-        <h1 className="hero-title">
+
+        {/*
+          SEO: A visually-hidden static <h1> gives crawlers the full text
+          immediately without waiting for the typewriter animation to finish.
+          The animated <h1> is aria-hidden so screen readers use the static one.
+        */}
+        <h1 className="sr-only">
+          Electrical Testing &amp; Engineering Services Singapore — D-Power Testing Services Pte Ltd
+        </h1>
+        <h1 className="hero-title" aria-hidden="true">
           <TypewriterText text={currentSlide.title} />
-        </h1> 
+        </h1>
 
         <div className="hero-actions">
-          <a className="primary-button" href="/contact">
+          <Link className="primary-button" to="/contact">
             {currentSlide.cta}
-          </a>
-          <a className="secondary-button" href="/services">
+          </Link>
+          <Link className="secondary-button" to="/services">
             Explore Capabilities
-          </a>
+          </Link>
         </div>
 
         <div className="carousel-controls" aria-label="Hero slide controls">
@@ -85,12 +96,12 @@ function HeroSection({ activeSlide, onSelectSlide }: HeroSectionProps) {
               key={slide.eyebrow}
               type="button"
               className={index === activeSlide ? 'is-active' : ''}
-              aria-label={`Show slide ${index + 1}`}
+              aria-label={`Show slide ${index + 1}: ${slide.eyebrow}`}
               onClick={() => onSelectSlide(index)}
             />
           ))}
         </div>
-      </div> 
+      </div>
     </section>
   )
 }

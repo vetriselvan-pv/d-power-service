@@ -1,4 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
+import { HashRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom'
+
 import Header from './Header'
 import Footer from './Footer'
 import HeroSection from './HeroSection'
@@ -6,105 +8,86 @@ import AboutSection from './AboutSection'
 import ServicesSection from './ServicesSection'
 import ContactSection from './ContactSection'
 import HoursSection from './HoursSection'
-// import TestimonialsSection from './TestimonialsSection' 
+import JsonLd from './JsonLd'
+import { useSEO } from '../hooks/useSEO'
 import { slides, company } from '../data/siteContent'
 
-type RoutePath = '/' | '/about' | '/services' | '/contact' | '/quote'
-
-const validRoutes: RoutePath[] = ['/', '/about', '/services', '/contact', '/quote']
-
-function getCurrentRoute(): RoutePath {
-  const path = window.location.pathname as RoutePath
-  return validRoutes.includes(path) ? path : '/'
-}
-
-function navigate(path: RoutePath) {
-  if (window.location.pathname !== path) {
-    window.history.pushState({}, '', path)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-    window.dispatchEvent(new PopStateEvent('popstate'))
-  }
-}
-
-function AppRouter() {
-  const [route, setRoute] = useState<RoutePath>(getCurrentRoute())
+// ─── Home Page ───────────────────────────────────────────────────────────────
+function HomePage() {
   const [activeSlide, setActiveSlide] = useState(0)
 
   useEffect(() => {
-    const handleLocationChange = () => setRoute(getCurrentRoute())
-    const handleDocumentClick = (event: MouseEvent) => {
-      const target = event.target as HTMLElement | null
-      const link = target?.closest('a[href]') as HTMLAnchorElement | null
-      if (!link) return
-
-      const href = link.getAttribute('href')
-      if (!href) return
-      if (href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('#')) {
-        return
-      }
-
-      if (validRoutes.includes(href as RoutePath)) {
-        event.preventDefault()
-        navigate(href as RoutePath)
-      }
-    }
-
-    window.addEventListener('popstate', handleLocationChange)
-    document.addEventListener('click', handleDocumentClick)
-    return () => {
-      window.removeEventListener('popstate', handleLocationChange)
-      document.removeEventListener('click', handleDocumentClick)
-    }
-  }, [])
-
-  useEffect(() => {
-    if (route !== '/') return
     const timer = window.setInterval(() => {
       setActiveSlide((current) => (current + 1) % slides.length)
     }, 5000)
-
     return () => window.clearInterval(timer)
-  }, [route])
+  }, [])
+
+  return (
+    <>
+      <HeroSection activeSlide={activeSlide} onSelectSlide={setActiveSlide} />
+      <HoursSection />
+    </>
+  )
+}
+
+// ─── About Page ───────────────────────────────────────────────────────────────
+function AboutPage() {
+  return (
+    <>
+      <AboutSection />
+      <HoursSection />
+    </>
+  )
+}
+
+// ─── 404 Not Found Page ───────────────────────────────────────────────────────
+function NotFoundPage() {
+  const navigate = useNavigate()
+  return (
+    <div className="not-found-page">
+      <h1>404 — Page Not Found</h1>
+      <p>The page you are looking for does not exist.</p>
+      <button onClick={() => navigate('/')} className="btn-primary">
+        Go Home
+      </button>
+    </div>
+  )
+}
+
+// ─── Scroll To Top on Route Change ───────────────────────────────────────────
+function ScrollToTop() {
+  const { pathname } = useLocation()
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [pathname])
+  return null
+}
+
+// ─── Shell (layout wrapper with header + footer) ──────────────────────────────
+function AppShell() {
+  const { pathname } = useLocation()
+
+  // Update page title, meta description, OG tags, and canonical per route
+  useSEO()
 
   return (
     <div className="page-shell">
-      <Header currentRoute={route} />
+      {/* Structured data: LocalBusiness + BreadcrumbList JSON-LD */}
+      <JsonLd />
+
+      <ScrollToTop />
+      <Header currentRoute={pathname} />
       <main>
-        <div key={route} className="page-enter-active">
-          {route === '/' && (
-            <>
-              <HeroSection activeSlide={activeSlide} onSelectSlide={setActiveSlide} />
-              <HoursSection />
-              {/* <HomeServicesPreview /> */}
-              {/* <CertificatesSection /> */}
-              {/* <TestimonialsSection /> */}
-            </>
-          )}
-
-          {route === '/about' && (
-            <>
-              <AboutSection />
-              <HoursSection />
-            </>
-          )}
-
-          {route === '/services' && (
-            <>
-              <ServicesSection />
-            </>
-          )}
-
-          {route === '/contact' && (
-            <>
-              <ContactSection />
-            </>
-          )}
-
-          {route === '/quote' && (
-            <>
-              <ContactSection />
-            </>
-          )}
+        <div key={pathname} className="page-enter-active">
+          <Routes>
+            <Route path="/"         element={<HomePage />} />
+            <Route path="/about"    element={<AboutPage />} />
+            <Route path="/services" element={<ServicesSection />} />
+            <Route path="/contact"  element={<ContactSection />} />
+            <Route path="/quote"    element={<ContactSection />} />
+            <Route path="*"         element={<NotFoundPage />} />
+          </Routes>
         </div>
       </main>
       <Footer />
@@ -124,6 +107,15 @@ function AppRouter() {
         <span className="whatsapp-fab__tooltip">Chat on WhatsApp</span>
       </a>
     </div>
+  )
+}
+
+// ─── Root with HashRouter ─────────────────────────────────────────────────────
+function AppRouter() {
+  return (
+    <HashRouter>
+      <AppShell />
+    </HashRouter>
   )
 }
 

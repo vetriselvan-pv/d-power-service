@@ -59,48 +59,57 @@
 
 // ============================================================
 // NEW SERVICES SECTION — Card Grid Layout
-// Each card navigates to /contact on click
+// Each card navigates to /contact via react-router useNavigate
 // ============================================================
 
+import { useNavigate } from 'react-router-dom'
+
 const serviceCards = [
-  { id: 1, title: '24-7 Emergency Call-Up Services', highlight: false },
-  { id: 2, title: 'Infrared Scanning', highlight: false },
-  { id: 3, title: 'Electrical & Lightning Audit', highlight: false },
-  { id: 4, title: 'Checking & Troubleshooting Work', highlight: false },
-  { id: 5, title: 'Electrical Components Repair / Replacement', highlight: false },
-  { id: 6, title: 'LV Switchboard Preventive Maintenance', highlight: false },
-  { id: 8, title: 'Switchboard Manufacturing', highlight: false },
-  { id: 9, title: 'Commercial / Industrial Installation Work', highlight: false },
-  { id: 10, title: 'Licensing', highlight: false },
+  { id: 1,  title: '24/7 Emergency Call-Up Services' },
+  { id: 2,  title: 'Infrared Scanning' },
+  { id: 3,  title: 'Electrical & Lightning Audit' },
+  { id: 4,  title: 'Checking & Troubleshooting Work' },
+  { id: 5,  title: 'Electrical Components Repair / Replacement' },
+  { id: 6,  title: 'LV Switchboard Preventive Maintenance' },
+  { id: 7,  title: 'Switchboard Manufacturing' },
+  { id: 8,  title: 'Commercial / Industrial Installation Work' },
+  { id: 9,  title: 'Licensing' },
 ]
 
 function ServicesSection() {
+  const navigate = useNavigate()
+
   const handleCardClick = () => {
-    window.history.pushState({}, '', '/contact')
+    navigate('/contact')
     window.scrollTo({ top: 0, behavior: 'smooth' })
-    window.dispatchEvent(new PopStateEvent('popstate'))
   }
 
   return (
-    <section id="services" className="services-section">
+    <section
+      id="services"
+      className="services-section"
+      aria-label="Electrical Testing and Engineering Services"
+    >
       <div className="section-heading">
         <p className="section-tag">Core Services</p>
         <h2>Specialized electrical services tailored to your needs.</h2>
       </div>
 
-      <div className="services-card-grid">
+      {/* Semantic list so crawlers index each service name as a list item */}
+      <ul className="services-card-grid" role="list">
         {serviceCards.map((service) => (
-          <button
-            key={service.id}
-            className={`service-card-tile ${service.highlight ? 'service-card-tile--highlight' : ''}`}
-            onClick={handleCardClick}
-            aria-label={`Enquire about ${service.title}`}
-          >
-            <span className="service-card-tile__title">{service.title}</span>
-            <span className="service-card-tile__arrow">→</span>
-          </button>
+          <li key={service.id}>
+            <button
+              className="service-card-tile"
+              onClick={handleCardClick}
+              aria-label={`Enquire about ${service.title}`}
+            >
+              <span className="service-card-tile__title">{service.title}</span>
+              <span className="service-card-tile__arrow" aria-hidden="true">→</span>
+            </button>
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   )
 }

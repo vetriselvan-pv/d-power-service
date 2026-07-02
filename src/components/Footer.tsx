@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import logo from '../assets/d-power-logo.png'
 function Footer() {
   return (
@@ -29,9 +30,9 @@ function Footer() {
           </div>
           <div className="footer-legal-list">
             <p className="footer-hours-title">Compliance</p>
-            <a href="/terms">Terms of Service</a>
-            <a href="/compliance">Compliance</a>
-            <a href="/privacy">Privacy Policy</a>
+            <Link to="/terms">Terms of Service</Link>
+            <Link to="/compliance">Compliance</Link>
+            <Link to="/privacy">Privacy Policy</Link>
           </div>
         </section>
       </div>
